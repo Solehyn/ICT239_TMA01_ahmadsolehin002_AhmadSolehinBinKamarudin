@@ -1,8 +1,13 @@
 from flask import render_template, request
 from app.model import Book
-from app import app, db
+from app.user import User
+from app import app
+from app.auth import auth 
+
+app.register_blueprint(auth)
 
 Book.initialize_collection()
+User.seed_defaults()
 
 @app.route("/")
 @app.route("/booktitles")

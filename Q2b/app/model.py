@@ -10,7 +10,7 @@ class Book(db.Document):
     meta = {'collection': 'books'}
 
     genres = db.ListField(db.StringField(), required=True)
-    title = db.StringField(required=True, unique=True) # Title is unique key
+    title = db.StringField(required=True, unique=True)
     category = db.StringField(required=True)
     url = db.StringField()
     description = db.ListField(db.StringField())

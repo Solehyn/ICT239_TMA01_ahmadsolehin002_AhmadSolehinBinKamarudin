@@ -93,11 +93,48 @@ body {
           <!-- sidebar -->
           <div class="col-xl-2 col-lg-3 col-md-4 sidebar fixed-top">
             <a href="#" class="navbar-brand text-white d-block mx-auto text-center py-3 mb-4 bottom-border">SG Library</a>
+            {% if current_user.is_authenticated %}
+            <div class="bottom-border pb-3">
+              {% if current_user.email == "admin@lib.sg" %}
+              <img src="{{ url_for('static', filename='img/avatar/admin.jpeg')}}" width="50" class="rounded-circle mr-3">
+              {% elif current_user.avatar == "" %}
+              <img src="{{ url_for('static', filename='img/avatar/default-avatar.png')}}" width="50"
+                class="rounded-circle mr-3" id="userAvatar">
+              {% else %}
+              <img src="{{ url_for('static', filename='img/avatar/' ~ current_user.avatar)}}" width="50"
+                class="rounded-circle mr-3" id="userAvatar">
+              {% endif %}
+              <a href="#" class="text-white">{{ current_user.name }} </a>
+            </div>
+            {% endif %}
             <ul class="navbar-nav flex-column mt-4">
               <li class="nav-item">
                 <a href="{{ url_for('booktitles') }}" class="nav-link text-white p-3 mb-2 sidebar-link active">
                   <i class="fas fa-book text-light fa-lg mr-3"></i>Book Titles
                 </a>
+              </li>
+              {% if not current_user.is_authenticated %}
+              <li class="nav-item">
+                <a href="{{ url_for('auth.login') }}" class="nav-link text-white p-3 mb-2 sidebar-link">
+                  <i class="fas fa-sign-in-alt text-light fa-lg mr-3"></i>Login
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('auth.register') }}" class="nav-link text-white p-3 mb-2 sidebar-link">
+                  <i class="fas fa-user text-light fa-lg mr-3"></i>Register
+                </a>
+              </li>
+              {% else %} 
+              {% if current_user.is_authenticated %}
+                {% if current_user.email == "admin@lib.sg" %}
+                  <li class="nav-item">
+                    <a href="#" class="nav-link text-white p-3 mb-2 sidebar-link">
+                      <i class="fas fa-user text-light fa-lg mr-3"></i>New Book
+                    </a>
+                  </li>
+                {% endif %}              
+              {% endif %}
+              {% endif %}
             </ul>
           </div>
           <!-- end of sidebar -->
@@ -107,6 +144,17 @@ body {
             <div class="row align-items-center">
               <div class="col-md-4">
                 <h4 class="text-dark text-uppercase mb-0">{% block page_title %}Default Title{% endblock %}</h4>
+              </div>
+              <div class="col-md-8">
+                <ul class="navbar-nav">
+                  {% if current_user.is_authenticated %}
+                  <li class="nav-item ml-auto">
+                    <a href="{{ url_for('auth.logout') }}" class="nav-link" title="Logout">
+                      <i class="fas fa-sign-out-alt fa-lg text-dark"></i>
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
               </div>
             </div>
           </div>

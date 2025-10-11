@@ -1,0 +1,22 @@
+{% from "_render_field.html" import render_field %}
+{% extends "base.html" %}
+
+{% block page_title %}REGISTER{% endblock %}
+{% block mainblock %}
+<div class="col-xl-6 col-sm-8 p-2">
+  <div class="card card-common">
+    <div class="card-header">
+      <h2>Register</h2>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('auth.register') }}" method="post">
+        {{ form.hidden_tag() }}
+        {{ render_field(form.email, type="email", placeholder="Enter email") }}
+        {{ render_field(form.password, type="password", placeholder="Enter password") }}
+        {{ render_field(form.name, placeholder="Enter name") }}
+        <button type="submit" class="btn btn-success">Submit</button>  <!-- green -->
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
