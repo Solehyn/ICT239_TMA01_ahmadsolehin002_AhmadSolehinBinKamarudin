@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+Book Titles
+{% endblock %}
+
+{% block mainblock %}
+<div class="col-12">
+    <!-- Filter and Search Section -->
+    <div class="card card-body mb-2 w-80 mx-auto" style="padding: 5px; background-color: #e1f1e1;">
+        <form class="form-inline d-flex justify-content-between align-items-center">
+            <div class="form-group mb-2 mb-md-0">
+                <label class="mr-2 text-custom-green font-weight-bold pl-2">Number of titles: {{ books|length }}</label>
+            </div>
+            <div class="form-group d-flex">
+                <label for="category" class="mr-2">Category</label>
+                <select class="form-control mr-2" id="category" name="category"> 
+                    <option value="All" {% if current_category == 'All' %}selected{% endif %}>All</option>
+                    <option value="Children" {% if current_category == 'Children' %}selected{% endif %}>Children</option>
+                    <option value="Teens" {% if current_category == 'Teens' %}selected{% endif %}>Teens</option>
+                    <option value="Adult" {% if current_category == 'Adult' %}selected{% endif %}>Adult</option>
+                </select>
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Book List -->
+    <div class="book-list">
+        <!-- Loop through each book passed from the backend -->
+        {% for book in books %}
+        <div class="card mb-2 card-common">
+            <div class="card-body p-3">
+
+                <!-- ---------------------------------------------------- -->
+                <!-- LAYOUT FOR LARGE/MEDIUM/SMALL SCREENS (Side-by-Side) -->
+                <!-- Hidden on Extra Small (<576px) screens (d-none) but visible from small size up (d-sm-flex) -->
+                <!-- ---------------------------------------------------- -->
+                <div class="media d-none d-sm-flex">
+                    <!-- Image -->
+                    <img src="{{ book.url }}" class="mr-4" alt="Cover for {{ book.title }}" style="width: 150px; height: 220px; object-fit: cover;">
+                    
+                    <!-- Text Details -->
+                    <div class="media-body">
+                        <h5 class="mt-0 font-weight-bold">{{ book.title }}</h5>
+                        <p class="mb-1 text-muted">By {{ book.authors|join(', ') }}</p>
+                        <p class="mb-2">
+                            <strong>Category:</strong> {{ book.category }}, {{ book.genres|join(', ') }} <br>
+                            <strong>Pages:</strong> {{ book.pages }}
+                        </p>
+                        {% if book.description %}
+                            <p>{{ book.description[0] }}</p>
+                            <p>{{ book.description[-1] }}</p>
+                        {% endif %}
+                        <a href="{{ url_for('bookdetails', title=book.title) }}" class="btn btn-success float-right">More details</a>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------------- -->
+                <!-- LAYOUT FOR EXTRA SMALL SCREENS (Image-on-Top) -->
+                <!-- Visible only on Extra Small (<576px) screens (d-block) and hidden from small size up (d-sm-none) -->
+                <!-- ---------------------------------------------------- -->
+                <div class="d-block d-sm-none">
+                    <!-- Image on Top (card-img-top style applied here) -->
+                    <!-- We use style to control the image height on small screens -->
+                    <img src="{{ book.url }}" class="card-img-top mb-2" alt="Cover for {{ book.title }}" style="object-fit: contain;">
+                    
+                    <!-- Text Details Below -->
+                    <div class="mt-3">
+                        <h5 class="mt-0 font-weight-bold">{{ book.title }}</h5>
+                        <p class="mb-1 text-muted">By {{ book.authors|join(', ') }}</p>
+                        <p class="mb-2">
+                            <strong>Category:</strong> {{ book.category }}, {{ book.genres|join(', ') }} <br>
+                            <strong>Pages:</strong> {{ book.pages }}
+                        </p>
+                        {% if book.description %}
+                            <p>{{ book.description[0] }}</p>
+                            <p>{{ book.description[-1] }}</p>
+                        {% endif %}
+                        <a href="{{ url_for('bookdetails', title=book.title) }}" class="btn btn-success float-right">More details</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
