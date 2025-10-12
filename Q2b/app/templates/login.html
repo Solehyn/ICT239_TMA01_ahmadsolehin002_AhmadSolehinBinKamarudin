@@ -13,7 +13,9 @@
         {{ form.hidden_tag() }}
         {{ render_field(form.email, type="email", placeholder="Enter email") }}
         {{ render_field(form.password, type="password", placeholder="Enter password") }}
-        <button type="submit" class="btn btn-success">Submit</button>  <!-- green -->
+        <div class="text-right mt-3">
+          <button type="submit" class="btn btn-success">Submit</button> 
+        </div>
       </form>
     </div>
   </div>

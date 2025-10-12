@@ -1,0 +1,109 @@
+{% from "_render_field.html" import render_field %}
+{% extends "base.html" %}
+
+{% block page_title %}ADD A BOOK{% endblock %}
+
+{% block mainblock %}
+
+<style>
+  /* Custom margin-right class to go beyond Bootstrap's default mr-5 scale */
+  .mr-6 {
+    margin-right: 4.5rem !important; 
+  }
+  .ml-6 {
+  margin-right: 4.5rem !important;
+  }
+</style>
+
+<div class="col-xl-8 col-lg-10 col-md-12 p-2">
+  <div class="card card-common">
+    <div class="card-body">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <form action="{{ url_for('auth.add_book') }}" method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="row">
+          <div class="col-md-12">
+            {{ render_field(form.genres) }}
+            {{ render_field(form.title) }}
+            {{ render_field(form.category) }}
+            {{ render_field(form.cover_url) }}
+            {{ render_field(form.description) }}
+            <!-- Author 1 -->
+            <div class="form-group d-flex align-items-center">
+              <div class="col-md-8">
+                {{ render_field(form.author_1) }}
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input type="checkbox" id="{{ form.illustrator_1.id }}" name="{{ form.illustrator_1.name }}" {% if form.illustrator_1.data %} checked {% endif %}>
+                <label for="{{ form.illustrator_1.id }}" class="ml-2 mb-0">Illustrator</label>
+              </div>
+            </div>
+
+            <!-- Author 2 -->
+            <div class="form-group d-flex align-items-center">
+              <div class="col-md-8">
+                {{ render_field(form.author_2) }}
+              </div>
+              <div class="col-md-4 d-flex align-items-center">
+                <input type="checkbox" id="{{ form.illustrator_1.id }}" name="{{ form.illustrator_1.name }}" {% if form.illustrator_1.data %} checked {% endif %}>
+                <label for="{{ form.illustrator_1.id }}" class="ml-2 mb-0">Illustrator</label>
+              </div>
+            </div>
+
+            <!-- Author 3 -->
+            <div class="form-group d-flex align-items-center">
+              <div class="col-md-8">
+                {{ render_field(form.author_3) }}
+              </div>
+              <div class="col-md-4 d-flex align-items-center">
+                <input type="checkbox" id="{{ form.illustrator_1.id }}" name="{{ form.illustrator_1.name }}" {% if form.illustrator_1.data %} checked {% endif %}>
+                <label for="{{ form.illustrator_1.id }}" class="ml-2 mb-0">Illustrator</label>
+              </div>
+            </div>
+
+            <!-- Author 4 -->
+            <div class="form-group d-flex align-items-center">
+              <div class="col-md-8">
+                {{ render_field(form.author_4) }}
+              </div>
+              <div class="col-md-4 d-flex align-items-center">
+                <input type="checkbox" id="{{ form.illustrator_1.id }}" name="{{ form.illustrator_1.name }}" {% if form.illustrator_1.data %} checked {% endif %}>
+                <label for="{{ form.illustrator_1.id }}" class="ml-2 mb-0">Illustrator</label>
+              </div>
+            </div>
+
+            <!-- Author 5 -->
+            <div class="form-group d-flex align-items-center">
+              <div class="col-md-8">
+                {{ render_field(form.author_5) }}
+              </div>
+              <div class="col-md-4 d-flex align-items-center">
+                <input type="checkbox" id="{{ form.illustrator_1.id }}" name="{{ form.illustrator_1.name }}" {% if form.illustrator_1.data %} checked {% endif %}>
+                <label for="{{ form.illustrator_1.id }}" class="ml-2 mb-0">Illustrator</label>
+              </div>
+            </div>
+            {{ render_field(form.pages) }}
+            {{ render_field(form.copies) }}
+          </div>
+        </div>
+
+        <div class="text-right">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

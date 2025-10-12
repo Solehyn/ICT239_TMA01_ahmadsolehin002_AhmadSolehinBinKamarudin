@@ -78,6 +78,10 @@ body {
 .text-custom-green {
     color: #1a5e20 !important; 
 }
+select[multiple] option:checked {
+    background-color: #6a6a6a;  
+    color: white;
+}    
   </style>
 </head>
 
@@ -125,14 +129,12 @@ body {
                 </a>
               </li>
               {% else %} 
-              {% if current_user.is_authenticated %}
-                {% if current_user.email == "admin@lib.sg" %}
-                  <li class="nav-item">
-                    <a href="#" class="nav-link text-white p-3 mb-2 sidebar-link">
-                      <i class="fas fa-user text-light fa-lg mr-3"></i>New Book
-                    </a>
-                  </li>
-                {% endif %}              
+              {% if current_user.is_authenticated and current_user.is_admin %}
+                <li class="nav-item">
+                  <a href="{{ url_for('auth.add_book') }}" class="nav-link text-white p-3 mb-2 sidebar-link">
+                    <i class="fas fa-user text-light fa-lg mr-3"></i>New Book
+                  </a>
+                </li>            
               {% endif %}
               {% endif %}
             </ul>

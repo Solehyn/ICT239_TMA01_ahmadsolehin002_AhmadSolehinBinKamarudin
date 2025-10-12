@@ -33,3 +33,4 @@ class User(UserMixin, db.Document):
                      name=u["name"],
                      avatar=u.get("avatar", ""),
                      is_admin=u["is_admin"]).save()
+                
