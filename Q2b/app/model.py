@@ -1,5 +1,5 @@
 from app import db
-from .books import all_books
+from app.books import all_books
 
 class Book(db.Document):
     """

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block page_title %}Current Loans{% endblock %}
+
+{% block mainblock %}
+{% if not loans %}
+    <p class="text-right font-weight-bold ml-4">No loan currently</p>
+{% else %}
+<div class="col-12">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == "return_loan" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                {% elif category == "renew_loan" %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                {% elif category == "delete_loan" %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="card card-common p-3">
+        <div class="table-responsive">
+            <table class="table table-borderless mb-0">
+                <!-- Table Header -->
+                <thead>
+                    <tr class="font-weight-bold" style="border-bottom: 1px solid #cfcfcf;">
+                        <th>Title / Author</th>
+                        <th>Due Date</th>
+                        <th>Return Date</th>
+                        <th>Renew Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr class="align-middle" style="border-bottom: 1px solid #cfcfcf;">
+                        <!-- Title / Author Column -->
+                        <td style="width: 35%;">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ loan.book.url }}" alt="Book cover" 
+                                    style="width: 80px; height: 120px; object-fit: cover; margin-right: 10px;">
+                                <div>
+                                    <div>{{ loan.book.title }}</div>
+                                    <div class="text-muted">{{ loan.book.authors|join(', ') }}</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Due Date Column -->
+                        <td style="width: 15%;">{{ loan.due_date.strftime('%d/%m/%Y') }}</td>
+
+                        <!-- Return Date Column -->
+                        <td style="width: 15%;">
+                            {% if loan.return_date %}
+                                {{ loan.return_date.strftime('%d/%m/%Y') }}
+                            {% else %}
+                                
+                            {% endif %}
+                        </td>
+
+                        <!-- Renew Count Column -->
+                        <td style="width: 5%;">{{ loan.renew_count }}</td>
+
+                        <!-- Button Column -->
+                        <td style="width: 30%;">
+                            <div class="d-flex flex-wrap justify-content-start">
+                                {% if loan.can_return %}
+                                    <a href="{{ url_for('auth.return_loan', loan_id=loan.id) }}" class="btn btn-success btn-sm mr-2 mb-1">Return</a>
+                                {% endif %}
+                                {% if loan.can_renew %}
+                                    <a href="{{ url_for('auth.renew_loan', loan_id=loan.id) }}" class="btn btn-success btn-sm mr-2 mb-1">Renew</a>
+                                {% endif %}
+                                {% if loan.can_delete %}
+                                    <a href="{{ url_for('auth.delete_loan', loan_id=loan.id) }}" class="btn btn-danger btn-sm mb-1">Delete</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

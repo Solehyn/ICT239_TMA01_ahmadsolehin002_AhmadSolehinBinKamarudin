@@ -82,11 +82,6 @@ select[multiple] option:checked {
     background-color: #6a6a6a;  
     color: white;
 }
-.btn-dark-danger:disabled {
-  color: #fff;
-  background-color: #c00000; /* A deep, rich red (Crimson/Bordeaux-like) */
-  border-color: #a41b1b;
-}    
   </style>
 </head>
 
@@ -137,9 +132,17 @@ select[multiple] option:checked {
               {% if current_user.is_authenticated and current_user.is_admin %}
                 <li class="nav-item">
                   <a href="{{ url_for('auth.add_book') }}" class="nav-link text-white p-3 mb-2 sidebar-link">
-                    <i class="fas fa-user text-light fa-lg mr-3"></i>New Book
+                    <i class="fas fa-cloud-upload-alt text-light fa-lg mr-3"></i>New Book
                   </a>
-                </li>            
+                </li>
+              {% else %}
+              {% if current_user.is_authenticated and not current_user.is_admin %}
+              <li class="nav-item">
+                <a href="{{ url_for('auth.view_loans') }}" class="nav-link text-white p-3 mb-2 sidebar-link">
+                  <i class="fas fa-clipboard text-light fa-lg mr-3"></i>Loans
+                </a>
+              </li>
+              {% endif %}            
               {% endif %}
               {% endif %}
             </ul>
