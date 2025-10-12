@@ -6,13 +6,12 @@ from app import db
 class User(UserMixin, db.Document):
     meta = {'collection': 'users'}
     email = db.StringField(required=True, unique=True, max_length=100)
-    password = db.StringField(required=True)  # store hash
+    password = db.StringField(required=True) 
     name = db.StringField(required=True, max_length=60)
     avatar = db.StringField(default="")
     is_admin = db.BooleanField(default=False)
 
     def get_id(self):
-        # MongoEngine pk is ObjectId; Flask-Login stores it as string
         return str(self.pk)
 
     @staticmethod

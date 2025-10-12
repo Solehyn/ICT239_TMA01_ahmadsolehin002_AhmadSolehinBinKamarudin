@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, session
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -91,7 +91,19 @@ def add_book():
         )
         new_book.save()
 
-        flash(f"Book '{title}' has been successfully added!", "success")
+        flash(f"Book '{title}' has been successfully added!", category="add_book")
         return render_template("add_book.html", form=form)
 
     return render_template("add_book.html", form=form)
+
+@auth.route("/make_loan/<title>", methods=["GET"])
+@login_required
+def make_loan(title):
+    book = Book.get_book_by_title(title)
+    if book and book.available > 0:
+        book.available -= 1
+        book.save()
+        flash(f"You have successfully made a loan for '{book.title}'!", category="make_loan")
+    else:
+        flash(f"No copies available for '{book.title}'.", category="make_loan")
+    return redirect(url_for('booktitles'))

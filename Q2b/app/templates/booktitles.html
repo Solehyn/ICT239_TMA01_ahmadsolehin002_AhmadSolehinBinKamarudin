@@ -25,6 +25,21 @@ Book Titles
         </form>
     </div>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          {% if category == "make_loan" %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <!-- Book List -->
     <div class="book-list">
         <!-- Loop through each book passed from the backend -->
@@ -53,6 +68,11 @@ Book Titles
                             <p>{{ book.description[-1] }}</p>
                         {% endif %}
                         <a href="{{ url_for('bookdetails', title=book.title) }}" class="btn btn-success float-right">More details</a>
+                        {% if book.available > 0 %}
+                            <a href="{{ url_for('auth.make_loan', title=book.title) }}" class="btn btn-success float-right mr-2">
+                                Make a Loan
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -78,6 +98,11 @@ Book Titles
                             <p>{{ book.description[-1] }}</p>
                         {% endif %}
                         <a href="{{ url_for('bookdetails', title=book.title) }}" class="btn btn-success float-right">More details</a>
+                        {% if book.available > 0 %}
+                            <a href="{{ url_for('auth.make_loan', title=book.title) }}" class="btn btn-success float-right mr-2">
+                                Make a Loan
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
 

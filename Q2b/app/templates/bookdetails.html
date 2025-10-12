@@ -72,10 +72,16 @@ BOOK DETAILS
             </div>
             
             <!-- Back button at the very bottom right (visible on all screens) -->
-            <div class="text-right mt-4">
-                <a href="{{ url_for('booktitles') }}" class="btn btn-success">Back to Book Titles</a>
-            </div>
-
+            {% if book.available > 0 %}
+                <a href="{{ url_for('auth.make_loan', title=book.title) }}" class="btn btn-success float-right ml-2">
+                    Make a Loan
+                </a>
+            {% else %}
+                <button class="btn btn-dark-danger float-right ml-2" disabled>
+                    Not Available
+                </button>
+            {% endif %}
+            <a href="{{ url_for('booktitles') }}" class="btn btn-success float-right">Back to Book Titles</a>
         </div>
     </div>
 </div>
