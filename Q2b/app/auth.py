@@ -8,9 +8,6 @@ from app.user import User
 from app.forms import AddBookForm
 from app.model import Book
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField
-
 auth = Blueprint("auth", __name__)
 
 @auth.route("/register", methods=["GET", "POST"])
@@ -57,27 +54,23 @@ def add_book():
     form = AddBookForm()
 
     if form.validate_on_submit():
-        # Gather form data
         title = form.title.data
         genres = form.genres.data
         category = form.category.data
         cover_url = form.cover_url.data
         description = form.description.data
         if description:
-            # Split on double line breaks (paragraphs)
             description_list = [p.strip() for p in description.split("\r\n\r\n") if p.strip()]
         else:
             description_list = []
         authors = []
 
-        # Process each author field
         for i in range(1, 6):
             author_field = getattr(form, f'author_{i}')
             illustrator_field = getattr(form, f'illustrator_{i}')
             
             author_name = author_field.data
             if author_name:
-                # If Illustrator checkbox is ticked, append "(Illustrator)" to the name
                 if illustrator_field.data:
                     author_name = f"{author_name} (Illustrator)"
                 authors.append(author_name)
@@ -85,14 +78,13 @@ def add_book():
         pages = form.pages.data
         copies = form.copies.data
 
-        # Save to the database (Book document)
         new_book = Book(
             title=title,
             genres=genres,
             category=category,
             url=cover_url,
             description=description_list,
-            authors=authors,  # List of authors (including illustrator status)
+            authors=authors,
             pages=pages,
             available=copies,
             copies=copies
